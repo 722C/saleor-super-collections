@@ -1,0 +1,139 @@
+{% extends "dashboard/base.html" %}
+{% load materializecss %}
+{% load i18n %}
+{% load mptt_tags %}
+{% load staticfiles %}
+
+{% block title %}
+  {% if super_collection.pk %}
+    {% trans "Edit super collection" context "Super collection form page title" %} {{ super_collection }}
+  {% else %}
+    {% trans "Add new super collection" context "Super collection detail page title" %}
+  {% endif %}
+  - {% trans "Super Collections" context "Dashboard super collections list" %} - {{ block.super }}
+{% endblock %}
+
+{% block body_class %}body-customers{% endblock %}
+
+{% block menu_super_collections_class %} active{% endblock %}
+
+{% block page_title %}
+  {% if super_collection.pk %}
+    {{ super_collection }}
+  {% else %}
+    {% trans "Add new super collection" context "Super collection form page title" %}
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <ul class="breadcrumbs breadcrumbs--history">
+    <li>
+      <a href="{% url 'super-collection-dashboard-list' %}" class="breadcrumbs--ellipsed-item">
+        {% trans "Super Collections" context "Dashboard super collections list" %}
+      </a>
+    </li>
+    <li class="back-mobile">
+      <a href="{% url 'super-collection-dashboard-list' %}" class="breadcrumbs--ellipsed-item">
+        <svg data-src="{% static "dashboard/images/arrow-left.svg" %}" fill="#fff" width="20px" height="20px"></svg>
+      </a>
+    </li>
+    {% if path %}
+      <li class="back-mobile">
+        <a href="{% url 'super-collection-dashboard-list' %}">
+          <svg data-src="{% static "dashboard/images/arrow-left.svg" %}" fill="#fff" width="20px" height="20px"></svg>
+        </a>
+      </li>
+      {% for node in path %}
+        {% if forloop.last %}
+          {% if node.pk %}
+            <li>
+              <a href="{% url 'super-collection-dashboard-detail' pk=node.pk %}" class="breadcrumbs--ellipsed-item">{{ node }}</a>
+            </li>
+            {% if super_collection.pk %}
+              <li>
+                <span class="breadcrumbs--ellipsed-item">
+                  {% trans "Edit" context "Super collection form page title" %}
+                </span>
+              </li>
+            {% else %}
+              <li>
+                <span class="breadcrumbs--ellipsed-item">
+                  {% trans "Add new super collection" context "Super collection detail breadcrumbs" %}
+                </span>
+              </li>
+            {% endif %}
+          {% endif %}
+        {% else %}
+          <li class="hide-on-med-and-down">
+            <a href="{% url 'super-collection-dashboard-detail' pk=node.pk %}" title="{{ node.name }}" class="breadcrumbs--ellipsed-item">
+              {{ node.name }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      <li>
+        <span class="breadcrumbs--ellipsed-item">
+          {% trans "Add new super collection" context "Super collection detail breadcrumbs" %}
+        </span>
+      </li>
+    {% endif %}
+  </ul>
+{% endblock %}
+
+{% block menu_catalogue_class %} active{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col m12 l9">
+      <div class="card">
+        <form method="post" id="form-super-collection" enctype="multipart/form-data" novalidate>
+          <div class="card-content">
+            {% csrf_token %}
+            <div class="row">
+              {{ form.name|materializecss }}
+            </div>
+            <div class="row">
+              {{ form.alternative_name|materializecss }}
+            </div>
+            <div class="row">
+              <div class="col s12">
+                <div class="row">
+                  {{ form.content|materializecss }}
+                </div>
+                <div class="row">
+                  {{ form.collections|materializecss }}
+                </div>
+                <div class="row">
+                  {{ form.background_image|materializecss }}
+                </div>
+                {% include "dashboard/includes/_google_preview.html" with object=super_collection form=form %}
+              </div>
+            </div>
+          </div>
+          <div class="card-action right-align">
+            {% if path %}
+              <a href="{% url 'super-collection-dashboard-detail' pk=path.last.pk %}" class="btn btn-flat">
+                {% trans "Cancel" context "Dashboard cancel action" %}
+              </a>
+            {% else %}
+              <a href="{% url 'super-collection-dashboard-list' %}" class="btn btn-flat">
+                {% trans "Cancel" context "Dashboard cancel action" %}
+              </a>
+            {% endif %}
+            {% if super_collection.pk %}
+              <button type="submit" class="btn waves-effect">
+                {% trans "Update" context "Dashboard update action" %}
+              </button>
+            {% else %}
+              <button type="submit" class="btn waves-effect">
+                {% trans "Create" context "Dashboard create action" %}
+              </button>
+            {% endif %}
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col m12 l3 help-box"></div>
+  </div>
+{% endblock %}

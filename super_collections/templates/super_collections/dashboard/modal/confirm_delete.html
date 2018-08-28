@@ -1,0 +1,41 @@
+{% extends "dashboard/base_modal.html" %}
+
+{% load i18n %}
+{% load mptt_tags %}
+
+{% block form_class %}{% endblock %}
+
+{% block action_url %}
+{% url "super-collection-dashboard-delete" pk=super_collection.pk %}
+{% endblock %}
+
+{% block title %}
+{% blocktrans trimmed with super_collection=super_collection context "Remove super collection modal title" %}
+  Remove super collection {{ super_collection }}
+{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+  <div class="col s12">
+    {% blocktrans trimmed with super_collection=super_collection context "Remove super collection modal title" %}
+      Are you sure you want to remove super collection <strong>{{ super_collection }}</strong>?
+    {% endblocktrans %}
+    {% if descendants %}
+      <p>
+        {% trans "The following child super collections will be removed:" context "Delete super collection form text about descendant super collections" %}
+        <ul>
+          {% recursetree descendants %}
+            {{ node.name }},
+            {% if not node.is_leaf_node %}
+              {{ children }}
+            {% endif %}
+          {% endrecursetree %}
+        </ul>
+      </p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block primary_action %}
+{% trans "Remove" context "Dashboard delete action" %}
+{% endblock %}

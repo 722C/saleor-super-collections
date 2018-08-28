@@ -1,0 +1,79 @@
+{% extends "dashboard/base.html" %}
+{% load i18n %}
+{% load mptt_tags %}
+{% load materializecss %}
+{% load staticfiles %}
+{% load utils %}
+
+{% block title %}
+  {% trans "Super Collections" context "Dashboard super collections list" %} - {{ block.super }}
+{% endblock %}
+
+{% block body_class %}body-customers{% endblock %}
+
+{% block menu_super_collections_class %} active{% endblock %}
+
+{% block header_extra %}
+  {% if perms.super_collections.edit %}
+    <div class="btn-fab-fixed">
+      <a href="{% url 'super-collection-dashboard-create' %}" class="btn-fab-default waves-effect waves-light" title="{% trans 'Add super collection' context 'Super collection list add button text' %}">
+        <svg data-src="{% static 'dashboard/images/add.svg' %}"></svg>
+      </a>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+  <ul class="breadcrumbs">
+    <li class="visible-s">
+      {% trans "Super Collections" context "Dashboard super collections list" %}
+    </li>
+  </ul>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col s12 l9">
+      {% if super_collections %}
+        <div class="card">
+          <div class="data-table-container">
+            <table class="bordered highlight data-table data-table-description">
+              <thead>
+                <tr>
+                  {% trans "Name" context "Dashboard super collections list table header name" as label %}
+                  {% sorting_header 'name' label %}
+                </tr>
+              </thead>
+              <tbody>
+                {% for super_collection in super_collections %}
+                  <tr data-action-go="{% if perms.super_collections.edit %}{% url 'super-collection-dashboard-detail' pk=super_collection.pk %}{% endif %}">
+                    <td>
+                      {{ super_collection }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {% paginate super_collections %}
+      {% else %}
+        {% if is_empty %}
+          {% include 'super_collections/dashboard/zero_page.html' %}
+        {% else %}
+          <div class="col s12">
+            <div class="not-found">
+              <p class="grey-text">
+                {% trans "No super collections found." context "Empty super collections table message" %}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="col s12 l3" id="filters">
+      {% if not is_empty %}{% filters filter_set %}{% endif %}
+    </div>
+  </div>
+{% endblock %}
+

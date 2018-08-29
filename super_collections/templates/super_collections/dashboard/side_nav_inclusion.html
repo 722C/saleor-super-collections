@@ -6,7 +6,7 @@
     {% trans "Super Collectionss" context "Dashboard super collections list" %}
   </p>
   <ul>
-      {% if perms.super_collections.vew %}
+      {% if perms.super_collections.view %}
         <li class="{% block menu_super_collections_class %}{% endblock %}">
           <a href="{% url 'super-collection-dashboard-list' %}">
             {% trans "Super Collections" context "Dashboard super collections list" %}

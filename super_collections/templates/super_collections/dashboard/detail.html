@@ -65,6 +65,24 @@
   </ul>
 {% endblock %}
 
+{% block header_extra %}
+  {% if root.pk %}
+    {% if perms.super_collections.edit %}
+      <a class="dropdown-button right" href="#" data-activates="super-collection-delete" data-constrainwidth="false">
+        <svg data-src="{% static "dashboard/images/more-vert.svg" %}" height="24" width="24"></svg>
+      </a>
+      <ul id="super-collection-delete" class="dropdown-content">
+        <li>
+          <a href="{{ root.get_absolute_url }}">
+            {% trans "View on site" context "Super collection action" %}
+          </a>
+        </li>
+      </ul>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+
 {% block content %}
   {% if root %}
     <div class="row">

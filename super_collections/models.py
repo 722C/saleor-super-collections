@@ -60,10 +60,9 @@ class SuperCollection(MPTTModel, SeoModel):
         return self.name
 
     def get_absolute_url(self):
-        return ''
-        # return reverse(
-        #     'super_collections:super_collection',
-        #     kwargs={'pk': self.id, 'slug': self.slug})
+        return reverse(
+            'super-collection-detail',
+            kwargs={'pk': self.id, 'slug': self.slug})
 
     def get_full_path(self, ancestors=None):
         if not self.parent_id:
@@ -72,3 +71,9 @@ class SuperCollection(MPTTModel, SeoModel):
             ancestors = self.get_ancestors()
         nodes = [node for node in ancestors] + [self]
         return '/'.join([node.slug for node in nodes])
+
+    def published_children(self):
+        return self.children.filter(is_published=True)
+
+    def published_collections(self):
+        return self.collections.filter(is_published=True)

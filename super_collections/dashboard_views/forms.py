@@ -7,11 +7,14 @@ from django.utils.translation import pgettext_lazy
 from text_unidecode import unidecode
 
 from saleor.product.models import Collection
+from saleor.dashboard.product.forms import RichTextField
 from saleor.dashboard.seo.fields import SeoDescriptionField, SeoTitleField
 from ..models import SuperCollection
 
 
 class SuperCollectionForm(forms.ModelForm):
+
+    content = RichTextField()
 
     class Meta:
         model = SuperCollection

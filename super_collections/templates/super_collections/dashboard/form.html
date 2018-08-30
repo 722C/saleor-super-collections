@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load mptt_tags %}
 {% load staticfiles %}
+{% load status %}
 
 {% block title %}
   {% if super_collection.pk %}
@@ -83,6 +84,23 @@
 
 {% block menu_catalogue_class %} active{% endblock %}
 
+{% block header_extra %}
+  {% if super_collection.pk %}
+    {% if perms.super_collections.edit %}
+      <a class="dropdown-button right" href="#" data-activates="super-collection-delete" data-constrainwidth="false">
+        <svg data-src="{% static "dashboard/images/more-vert.svg" %}" height="24" width="24"></svg>
+      </a>
+      <ul id="super-collection-delete" class="dropdown-content">
+        <li>
+          <a href="{{ super_collection.get_absolute_url }}">
+            {% trans "View on site" context "Super collection action" %}
+          </a>
+        </li>
+      </ul>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
 {% block content %}
   <div class="row">
     <div class="col m12 l9">
@@ -103,6 +121,10 @@
                 </div>
                 <div class="row">
                   {{ form.collections|materializecss }}
+                </div>
+                <span class="card-title">Availability</span>
+                <div class="row">
+                  {{ form.is_published|materializecss }}
                 </div>
                 <div class="row">
                   {{ form.background_image|materializecss }}
@@ -134,6 +156,36 @@
         </form>
       </div>
     </div>
-    <div class="col m12 l3 help-box"></div>
+    {% if super_collection.pk %}
+      <div class="col s12 l3">
+        <div id="status">
+          <div class="row no-margin">
+            <div class="col s12">
+              <div class="card">
+                <div class="card-content">
+                  <form id="toggle-publish-form" action="{% url 'super-collection-dashboard-publish' pk=super_collection.pk %}">
+                    <div class="switch" id="collection-is-published">
+                      <label>
+                        <input id="toggle-publish-switch" type="checkbox" {% if super_collection.is_published %} checked {% endif %}>
+                        <span class="lever"></span>
+                        <span class="label">
+                          {% if super_collection.is_published %}
+                            {% trans "Published" context "Collection field" %}
+                          {% else %}
+                            {% trans "Draft" context "Collection field" %}
+                          {% endif %}
+                        </span>
+                      </label>
+                    </div>
+                  {% csrf_token %}
+                  </form>
+                  <h5>{% render_collection_availability super_collection %}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 {% endblock %}

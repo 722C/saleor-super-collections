@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+{% load get_thumbnail from product_images %}
+
+
+{% block title %}
+  {% if super_collection.seo_title %}
+    {{ super_collection.seo_title }}
+  {% else %}
+    {{ super_collection.name }} - {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block breadcrumb_part %}
+  <li>
+    <a href="{% url 'home' %}">{% trans "Home" context 'Super collection breadcrumbs home' %}</a>
+  </li>
+  {% for ancestor in super_collection.get_ancestors %}
+    <li><a href='{{ ancestor.get_absolute_url }}'>{{ ancestor.name }}</a>
+    </li>
+  {% endfor %}
+  <li><a href='{{ super_collection.get_absolute_url }}'>{{ super_collection.name }}</a></li>
+{% endblock %}
+
+
+{% block topcontent %}
+  {% if super_collection.background_image %}
+    <div class="row" id="product-list-image" style="background-image: url('{{ super_collection.background_image.url }}')"></div>
+  {% endif %}
+{% endblock topcontent %}
+
+{% block content %}
+  <div class="d-flex justify-content-center">
+    <h2>
+      <strong>{{ super_collection }}</strong>
+    </h2>
+  </div>
+  <div class="">
+    {{ super_collection.content|safe }}
+  </div>
+  <div class="row">
+    {% for child_super_collection in super_collection.published_children %}
+      <div class="col-6 col-lg-3 product-list">
+        <a href="{{ child_super_collection.get_absolute_url }}" class="link--clean">
+          <div class="text-center">
+            <div>
+              <img oncontextmenu="return false;" class="img-responsive"
+                  src="{% get_thumbnail child_super_collection.background_image method="cropout" size="255x255" %}"
+                  srcset="{% get_thumbnail child_super_collection.background_image method="cropout" size="255x255" %} 1x, {% get_thumbnail child_super_collection.background_image method="cropout" size="510x510" %} 2x"
+                  alt="">
+              <span class="product-list-item-name" title="{{ child_super_collection }}">{{ child_super_collection }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="row">
+    {% for collection in super_collection.published_collections %}
+      <div class="col-6 col-lg-3 product-list">
+        <a href="{{ collection.get_absolute_url }}" class="link--clean">
+          <div class="text-center">
+            <div>
+              <img oncontextmenu="return false;" class="img-responsive"
+                  src="{% get_thumbnail collection.background_image method="cropout" size="255x255" %}"
+                  srcset="{% get_thumbnail collection.background_image method="cropout" size="255x255" %} 1x, {% get_thumbnail collection.background_image method="cropout" size="510x510" %} 2x"
+                  alt="">
+              <span class="product-list-item-name" title="{{ collection }}">{{ collection }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}

@@ -22,6 +22,9 @@ class SuperCollectionQuerySet(models.QuerySet):
     def public(self):
         return self.filter(is_published=True)
 
+    def public_roots(self):
+        return self.filter(is_published=True, parent__isnull=True)
+
 
 class SuperCollection(MPTTModel, SeoModel):
     parent = models.ForeignKey(

@@ -1,8 +1,8 @@
 from django import template
 
-register = template.Library()
-
 from ..models import SuperCollection
+
+register = template.Library()
 
 
 @register.inclusion_tag('super_collections/dashboard/side_nav_inclusion.html',

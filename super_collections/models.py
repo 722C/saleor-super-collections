@@ -54,6 +54,10 @@ class SuperCollection(MPTTModel, SeoModel):
 
     main_picture_1_to_3_box_header_picture = models.ImageField(
         blank=True, null=True)
+    main_picture_1_to_3_box_header_text = models.CharField(
+        max_length=200, blank=True)
+    main_picture_1_to_3_box_subheader_text = models.CharField(
+        max_length=200, blank=True)
     main_picture_1_to_3_box_text = models.CharField(max_length=200, blank=True)
     main_picture_1_to_3_box_button_text = models.CharField(
         max_length=200, blank=True)
@@ -83,6 +87,8 @@ class SuperCollection(MPTTModel, SeoModel):
 
     main_picture_4_box_header_picture = models.ImageField(
         blank=True, null=True)
+    main_picture_4_box_header_text = models.CharField(
+        max_length=200, blank=True)
     main_picture_4_box_text = models.CharField(max_length=200, blank=True)
     main_picture_4_box_button_text = models.CharField(
         max_length=200, blank=True)

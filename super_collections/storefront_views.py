@@ -22,3 +22,4 @@ def super_collection_index(request, slug, pk):
                 'super_collections': SuperCollection.objects.public_roots()})
     return TemplateResponse(request, 'super_collections/super_collection.html',
                             ctx)
+

@@ -48,6 +48,8 @@ class SuperCollection(MPTTModel, SeoModel):
     objects = SuperCollectionQuerySet.as_manager()
     tree = TreeManager()
 
+    custom_slug = models.SlugField(max_length=128, unique=True, null=True)
+
     class Meta:
         app_label = 'super_collections'
         ordering = ['pk']

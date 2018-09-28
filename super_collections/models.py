@@ -48,6 +48,8 @@ class SuperCollection(MPTTModel, SeoModel):
     objects = SuperCollectionQuerySet.as_manager()
     tree = TreeManager()
 
+    custom_slug = models.SlugField(max_length=128, unique=True, null=True)
+
     main_picture_1 = models.ImageField(blank=True, null=True)
     main_picture_2 = models.ImageField(blank=True, null=True)
     main_picture_3 = models.ImageField(blank=True, null=True)

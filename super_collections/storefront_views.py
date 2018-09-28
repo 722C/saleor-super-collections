@@ -36,3 +36,4 @@ def super_collection_index(request, slug, pk):
                 'products': products_and_availability})
     return TemplateResponse(request, 'super_collections/super_collection.html',
                             ctx)
+

@@ -50,6 +50,79 @@ class SuperCollection(MPTTModel, SeoModel):
 
     custom_slug = models.SlugField(max_length=128, unique=True, null=True)
 
+    main_picture_1 = models.ImageField(blank=True, null=True)
+    main_picture_2 = models.ImageField(blank=True, null=True)
+    main_picture_3 = models.ImageField(blank=True, null=True)
+
+    main_picture_1_to_3_box_header_picture = models.ImageField(
+        blank=True, null=True)
+    main_picture_1_to_3_box_header_text = models.CharField(
+        max_length=200, blank=True)
+    main_picture_1_to_3_box_subheader_text = models.CharField(
+        max_length=200, blank=True)
+    main_picture_1_to_3_box_text = models.CharField(max_length=200, blank=True)
+    main_picture_1_to_3_box_button_text = models.CharField(
+        max_length=200, blank=True)
+    main_picture_1_to_3_link = models.CharField(max_length=200, blank=True)
+
+    popular_collection_1 = models.ImageField(blank=True, null=True)
+    popular_collection_1_text = models.CharField(max_length=200, blank=True)
+    popular_collection_1_link = models.CharField(max_length=200, blank=True)
+
+    popular_collection_2 = models.ImageField(blank=True, null=True)
+    popular_collection_2_text = models.CharField(max_length=200, blank=True)
+    popular_collection_2_link = models.CharField(max_length=200, blank=True)
+
+    popular_collection_3 = models.ImageField(blank=True, null=True)
+    popular_collection_3_text = models.CharField(max_length=200, blank=True)
+    popular_collection_3_link = models.CharField(max_length=200, blank=True)
+
+    popular_collection_4 = models.ImageField(blank=True, null=True)
+    popular_collection_4_text = models.CharField(max_length=200, blank=True)
+    popular_collection_4_link = models.CharField(max_length=200, blank=True)
+
+    popular_collection_5 = models.ImageField(blank=True, null=True)
+    popular_collection_5_text = models.CharField(max_length=200, blank=True)
+    popular_collection_5_link = models.CharField(max_length=200, blank=True)
+
+    main_picture_4 = models.ImageField(blank=True, null=True)
+
+    main_picture_4_box_header_picture = models.ImageField(
+        blank=True, null=True)
+    main_picture_4_box_header_text = models.CharField(
+        max_length=200, blank=True)
+    main_picture_4_box_text = models.CharField(max_length=200, blank=True)
+    main_picture_4_box_button_text = models.CharField(
+        max_length=200, blank=True)
+    main_picture_4_link = models.CharField(max_length=200, blank=True)
+
+    best_seller_1 = models.ForeignKey(
+        'product.Product', blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
+    best_seller_2 = models.ForeignKey(
+        'product.Product', blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
+    best_seller_3 = models.ForeignKey(
+        'product.Product', blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
+    best_seller_4 = models.ForeignKey(
+        'product.Product', blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
+    best_seller_5 = models.ForeignKey(
+        'product.Product', blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
+    best_seller_6 = models.ForeignKey(
+        'product.Product', blank=True, null=True, on_delete=models.SET_NULL,
+        related_name='+')
+
+    previous_picture = models.ImageField(blank=True, null=True)
+    previous_picture_text = models.CharField(max_length=200, blank=True)
+    previous_picture_link = models.CharField(max_length=200, blank=True)
+
+    next_picture = models.ImageField(blank=True, null=True)
+    next_picture_text = models.CharField(max_length=200, blank=True)
+    next_picture_link = models.CharField(max_length=200, blank=True)
+
     class Meta:
         app_label = 'super_collections'
         ordering = ['pk']

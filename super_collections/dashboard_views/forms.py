@@ -14,7 +14,9 @@ from ..models import SuperCollection
 
 class SuperCollectionForm(forms.ModelForm):
 
-    content = RichTextField()
+    content = RichTextField(required=False)
+
+    custom_slug = forms.SlugField(required=False)
 
     class Meta:
         model = SuperCollection

@@ -25,6 +25,10 @@ class SuperCollectionQuerySet(models.QuerySet):
     def public_roots(self):
         return self.filter(is_published=True, parent__isnull=True)
 
+    def public_roots_for_list(self):
+        return self.filter(is_published=True, parent__isnull=True,
+                           show_in_root_list=True)
+
 
 class SuperCollection(MPTTModel, SeoModel):
     parent = models.ForeignKey(
@@ -39,6 +43,7 @@ class SuperCollection(MPTTModel, SeoModel):
     background_image = VersatileImageField(
         upload_to='super-collection-backgrounds', blank=True, null=True)
     is_published = models.BooleanField(default=False)
+    show_in_root_list = models.BooleanField(default=False)
 
     alternative_name = models.CharField(max_length=255, blank=True)
     content = models.TextField(help_text=pgettext_lazy(

@@ -13,4 +13,6 @@ def super_collections_side_nav(context):
 
 @register.inclusion_tag('super_collections/_list.html')
 def super_collections():
-    return {"super_collections": SuperCollection.objects.public_roots()}
+    return {
+        "super_collections": SuperCollection.objects.public_roots_for_list()
+    }

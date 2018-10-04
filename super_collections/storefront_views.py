@@ -32,8 +32,7 @@ def super_collection_index(request, slug, pk):
         products, request.discounts, request.taxes,
         request.currency))
     ctx.update({'super_collection': super_collection,
-                'super_collections': SuperCollection.objects.public_roots(),
+                'super_collections': SuperCollection.objects.public_roots_for_list(),
                 'products': products_and_availability})
     return TemplateResponse(request, 'super_collections/super_collection.html',
                             ctx)
-

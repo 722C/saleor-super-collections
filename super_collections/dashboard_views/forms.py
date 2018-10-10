@@ -39,6 +39,8 @@ class SuperCollectionForm(forms.ModelForm):
             extra_attrs={'data-bind': self['name'].auto_id})
 
     def save(self, commit=True):
+        if self.instance.custom_slug == "":
+            self.instance.custom_slug = None
         self.instance.slug = slugify(unidecode(self.instance.name))
         if self.parent_pk:
             self.instance.parent = get_object_or_404(

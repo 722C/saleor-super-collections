@@ -36,3 +36,12 @@ def super_collection_index(request, slug, pk):
                 'products': products_and_availability})
     return TemplateResponse(request, 'super_collections/super_collection.html',
                             ctx)
+
+def super_collection_redirect(request, slug, pk):
+    super_collections = super_collections_visible_to_user(request.user)
+    super_collection = get_object_or_404(super_collections, id=pk)
+    if not super_collection.custom_slug:
+        return super_collection_index(request, slug, pk)
+    else:
+        return HttpResponsePermanentRedirect(
+            super_collection.get_absolute_url())

@@ -145,9 +145,14 @@ class SuperCollection(MPTTModel, SeoModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse(
-            'super-collection-detail',
-            kwargs={'pk': self.id, 'slug': self.slug})
+        if not self.custom_slug:
+            return reverse(
+                'super-collection-detail',
+                kwargs={'pk': self.id, 'slug': self.slug})
+        else:
+            return reverse(
+                'collection-custom',
+                kwargs={'custom_slug': self.custom_slug})
 
     def get_full_path(self, ancestors=None):
         if not self.parent_id:

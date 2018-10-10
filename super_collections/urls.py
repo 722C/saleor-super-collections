@@ -5,7 +5,7 @@ from . import storefront_views as storefront_views
 
 urlpatterns = [
     url(r'^super-collection/(?P<slug>[a-z0-9-_/]+?)-(?P<pk>[0-9]+)/$',
-        storefront_views.super_collection_index,
+        storefront_views.super_collection_redirect,
         name='super-collection-detail'),
 
     url(r'^dashboard/super-collections/$',

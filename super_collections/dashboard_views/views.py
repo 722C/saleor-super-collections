@@ -51,7 +51,6 @@ def super_collection_create(request, root_pk=None):
         if root_pk:
             return redirect('super-collection-dashboard-detail', pk=root_pk)
         return redirect('super-collection-dashboard-list')
-    print(form.errors)
     ctx = {'super_collection': super_collection, 'form': form, 'path': path}
     return TemplateResponse(request, 'super_collections/dashboard/form.html', ctx)
 

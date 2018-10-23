@@ -1,5 +1,6 @@
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse, get_script_prefix
+from django.utils.encoding import iri_to_uri
 from django.utils.translation import pgettext_lazy
 
 from mptt.managers import TreeManager
@@ -150,9 +151,9 @@ class SuperCollection(MPTTModel, SeoModel):
                 'super-collection-detail',
                 kwargs={'pk': self.id, 'slug': self.slug})
         else:
-            return reverse(
-                'collection-custom',
-                kwargs={'custom_slug': self.custom_slug})
+            # Handle script prefix manually because we bypass reverse()
+            return iri_to_uri(get_script_prefix().rstrip('/') +
+                              self.custom_slug)
 
     def get_full_path(self, ancestors=None):
         if not self.parent_id:

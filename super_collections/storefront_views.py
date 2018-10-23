@@ -37,6 +37,7 @@ def super_collection_index(request, slug, pk):
     return TemplateResponse(request, 'super_collections/super_collection.html',
                             ctx)
 
+
 def super_collection_redirect(request, slug, pk):
     super_collections = super_collections_visible_to_user(request.user)
     super_collection = get_object_or_404(super_collections, id=pk)

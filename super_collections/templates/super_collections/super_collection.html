@@ -46,8 +46,8 @@
           <div class="text-center">
             <div>
               <img oncontextmenu="return false;" class="img-responsive"
-                  src="{% get_thumbnail child_super_collection.background_image method="cropout" size="255x255" %}"
-                  srcset="{% get_thumbnail child_super_collection.background_image method="cropout" size="255x255" %} 1x, {% get_thumbnail child_super_collection.background_image method="cropout" size="510x510" %} 2x"
+                  src="{% get_thumbnail child_super_collection.background_image method="crop" size="255x255" %}"
+                  srcset="{% get_thumbnail child_super_collection.background_image method="crop" size="255x255" %} 1x, {% get_thumbnail child_super_collection.background_image method="crop" size="510x510" %} 2x"
                   alt="">
               <span class="product-list-item-name" title="{{ child_super_collection }}">{{ child_super_collection }}</span>
             </div>
@@ -63,8 +63,8 @@
           <div class="text-center">
             <div>
               <img oncontextmenu="return false;" class="img-responsive"
-                  src="{% get_thumbnail collection.background_image method="cropout" size="255x255" %}"
-                  srcset="{% get_thumbnail collection.background_image method="cropout" size="255x255" %} 1x, {% get_thumbnail collection.background_image method="cropout" size="510x510" %} 2x"
+                  src="{% get_thumbnail collection.background_image method="crop" size="255x255" %}"
+                  srcset="{% get_thumbnail collection.background_image method="crop" size="255x255" %} 1x, {% get_thumbnail collection.background_image method="crop" size="510x510" %} 2x"
                   alt="">
               <span class="product-list-item-name" title="{{ collection }}">{{ collection }}</span>
             </div>

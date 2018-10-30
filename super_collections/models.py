@@ -152,7 +152,7 @@ class SuperCollection(MPTTModel, SeoModel):
                 kwargs={'pk': self.id, 'slug': self.slug})
         else:
             # Handle script prefix manually because we bypass reverse()
-            return iri_to_uri(get_script_prefix().rstrip('/') +
+            return iri_to_uri(get_script_prefix() +
                               self.custom_slug)
 
     def get_full_path(self, ancestors=None):

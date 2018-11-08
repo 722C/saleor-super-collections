@@ -49,6 +49,7 @@ class SuperCollection(MPTTModel, SeoModel):
     hide_sidebar = models.BooleanField(default=False)
 
     alternative_name = models.CharField(max_length=255, blank=True)
+    subheader = models.CharField(max_length=255, blank=True)
     content = models.TextField(help_text=pgettext_lazy(
         'Collection extension', 'CMS-able content.'), blank=True)
     added = models.DateTimeField(auto_now_add=True)

@@ -48,7 +48,7 @@
               <img oncontextmenu="return false;" class="img-responsive"
                   src="{% get_thumbnail child_super_collection.background_image method="crop" size="255x255" %}"
                   srcset="{% get_thumbnail child_super_collection.background_image method="crop" size="255x255" %} 1x, {% get_thumbnail child_super_collection.background_image method="crop" size="510x510" %} 2x"
-                  alt="">
+                  alt="{{ child_super_collection }} background image">
               <span class="product-list-item-name" title="{{ child_super_collection }}">{{ child_super_collection }}</span>
             </div>
           </div>
@@ -65,7 +65,7 @@
               <img oncontextmenu="return false;" class="img-responsive"
                   src="{% get_thumbnail collection.background_image method="crop" size="255x255" %}"
                   srcset="{% get_thumbnail collection.background_image method="crop" size="255x255" %} 1x, {% get_thumbnail collection.background_image method="crop" size="510x510" %} 2x"
-                  alt="">
+                  alt="{{ collection }} background image">
               <span class="product-list-item-name" title="{{ collection }}">{{ collection }}</span>
             </div>
           </div>

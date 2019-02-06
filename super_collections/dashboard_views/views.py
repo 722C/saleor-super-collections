@@ -22,7 +22,7 @@ def super_collection_list(request):
     super_collection_filter = SuperCollectionFilter(
         request.GET, queryset=super_collections)
     super_collections = get_paginator_items(
-        super_collections, settings.DASHBOARD_PAGINATE_BY,
+        super_collection_filter.qs, settings.DASHBOARD_PAGINATE_BY,
         request.GET.get('page'))
     # Call this so that cleaned_data exists on the filter_set
     super_collection_filter.form.is_valid()

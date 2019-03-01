@@ -1,4 +1,6 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
+from django.db.models import Case, When, Value
 from django.urls import reverse, get_script_prefix
 from django.utils.encoding import iri_to_uri
 from django.utils.translation import pgettext_lazy
@@ -38,6 +40,8 @@ class SuperCollection(MPTTModel, SeoModel):
     collections = models.ManyToManyField(
         'product.Collection',
         related_name='super_collections', blank=True)
+    collection_ordering = ArrayField(
+        models.PositiveIntegerField(), blank=True, default=list)
     name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(max_length=128)
 
@@ -168,4 +172,19 @@ class SuperCollection(MPTTModel, SeoModel):
         return self.children.filter(is_published=True)
 
     def published_collections(self):
-        return self.collections.filter(is_published=True)
+        return self.sorted_collections.filter(is_published=True)
+
+    @property
+    def preserved_order(self):
+        return Case(
+            When(pk=0, then=0),
+            *[When(pk=pk, then=pos) for pos, pk in enumerate(
+                self.collection_ordering)],
+            default=Value(0),
+            output_field=models.PositiveIntegerField()
+        )
+
+    @property
+    def sorted_collections(self):
+        return self.collections.annotate(
+            preserved=self.preserved_order).order_by('preserved', 'pk')

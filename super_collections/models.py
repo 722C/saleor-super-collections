@@ -11,6 +11,7 @@ from mptt.models import MPTTModel
 from versatileimagefield.fields import VersatileImageField
 
 from saleor.core.permissions import MODELS_PERMISSIONS
+from saleor.product.models import Collection
 from saleor.seo.models import SeoModel
 
 
@@ -169,6 +170,8 @@ class SuperCollection(MPTTModel, SeoModel):
         return '/'.join([node.slug for node in nodes])
 
     def published_children(self):
+        if not self.pk:
+            return SuperCollection.objects.none()
         return self.children.filter(is_published=True)
 
     def published_collections(self):
@@ -186,5 +189,7 @@ class SuperCollection(MPTTModel, SeoModel):
 
     @property
     def sorted_collections(self):
+        if not self.pk:
+            return Collection.objects.none()
         return self.collections.annotate(
             preserved=self.preserved_order).order_by('preserved', 'pk')

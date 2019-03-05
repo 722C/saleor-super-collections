@@ -39,11 +39,6 @@
       </a>
     </li>
     {% if path %}
-      <li class="back-mobile">
-        <a href="{% url 'super-collection-dashboard-list' %}">
-          <svg data-src="{% static "dashboard/images/arrow-left.svg" %}" fill="#fff" width="20px" height="20px"></svg>
-        </a>
-      </li>
       {% for node in path %}
         {% if forloop.last %}
           {% if node.pk %}

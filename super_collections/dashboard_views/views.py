@@ -10,7 +10,7 @@ from django.views.decorators.http import require_POST
 from saleor.core.utils import get_paginator_items
 from saleor.dashboard.views import staff_member_required
 from .filters import SuperCollectionFilter
-from .forms import SuperCollectionForm
+from .forms import SuperCollectionForm, ReorderSuperCollectionCardsForm
 
 from ..models import SuperCollection
 
@@ -89,7 +89,7 @@ def super_collection_edit(request, pk=None):
 def super_collection_details(request, pk):
     root = get_object_or_404(SuperCollection, pk=pk)
     path = root.get_ancestors(include_self=True) if root else []
-    super_collections = root.get_children().order_by('name')
+    super_collections = root.get_children().order_by('sort_order')
     super_collections_filter = SuperCollectionFilter(
         request.GET, queryset=super_collections)
     super_collections = get_paginator_items(
@@ -100,6 +100,20 @@ def super_collection_details(request, pk):
            'is_empty': not super_collections_filter.queryset.exists()}
     return TemplateResponse(request, 'super_collections/dashboard/detail.html', ctx)
 
+@staff_member_required
+@permission_required('super_collections.edit')
+def ajax_reorder_super_collection_cards(request, node_pk):
+    node = get_object_or_404(SuperCollection, pk=node_pk)
+    form = ReorderSuperCollectionCardsForm(
+        request.POST, instance=node)
+    status = 200
+    ctx = {}
+    if form.is_valid():
+        form.save()
+    elif form.errors:
+        status = 400
+        ctx = {'error': form.errors}
+    return JsonResponse(ctx, status=status)
 
 @staff_member_required
 @permission_required('super_collections.edit')

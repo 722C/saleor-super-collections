@@ -8,6 +8,7 @@ from text_unidecode import unidecode
 
 from saleor.product.models import Collection
 from saleor.dashboard.product.forms import RichTextField
+from saleor.dashboard.forms import OrderedModelMultipleChoiceField
 from saleor.dashboard.seo.fields import SeoDescriptionField, SeoTitleField
 from ..models import SuperCollection
 
@@ -46,3 +47,22 @@ class SuperCollectionForm(forms.ModelForm):
             self.instance.parent = get_object_or_404(
                 SuperCollection, pk=self.parent_pk)
         return super().save(commit=commit)
+
+class ReorderSuperCollectionCardsForm(forms.ModelForm):
+    ordered_values = OrderedModelMultipleChoiceField(
+        queryset=SuperCollection.objects.none())
+
+    class Meta:
+        model = SuperCollection
+        fields = ()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance:
+            self.fields['ordered_values'].queryset = self.instance.published_children()
+
+    def save(self):
+        for order, value in enumerate(self.cleaned_data['ordered_values']):
+            value.sort_order = order
+            value.save()
+        return self.instance

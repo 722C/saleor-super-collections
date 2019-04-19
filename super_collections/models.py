@@ -11,9 +11,9 @@ from mptt.models import MPTTModel
 from versatileimagefield.fields import VersatileImageField
 
 from saleor.core.permissions import MODELS_PERMISSIONS
+from saleor.core.models import SortableModel
 from saleor.product.models import Collection
 from saleor.seo.models import SeoModel
-
 
 # Add in the permissions specific to our models.
 MODELS_PERMISSIONS += [
@@ -34,7 +34,7 @@ class SuperCollectionQuerySet(models.QuerySet):
                            show_in_root_list=True)
 
 
-class SuperCollection(MPTTModel, SeoModel):
+class SuperCollection(MPTTModel, SeoModel, SortableModel):
     parent = models.ForeignKey(
         'self', null=True, blank=True, related_name='children',
         on_delete=models.CASCADE)
@@ -45,6 +45,7 @@ class SuperCollection(MPTTModel, SeoModel):
         models.PositiveIntegerField(), blank=True, default=list)
     name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(max_length=128)
+    sort_order = models.PositiveIntegerField(default=100)
 
     background_image = VersatileImageField(
         upload_to='super-collection-backgrounds', blank=True, null=True)
@@ -139,7 +140,7 @@ class SuperCollection(MPTTModel, SeoModel):
 
     class Meta:
         app_label = 'super_collections'
-        ordering = ['pk']
+        ordering = ['sort_order']
 
         permissions = (
             ('view', pgettext_lazy('Permission description',
@@ -176,6 +177,9 @@ class SuperCollection(MPTTModel, SeoModel):
 
     def published_collections(self):
         return self.sorted_collections.filter(is_published=True)
+
+    def get_ordering_queryset(self):
+        return self.published_children()
 
     @property
     def preserved_order(self):

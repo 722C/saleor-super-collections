@@ -60,6 +60,8 @@ class ReorderSuperCollectionCardsForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance:
             self.fields['ordered_values'].queryset = self.instance.published_children()
+        else:
+            self.fields['ordered_values'].queryset = SuperCollection.objects.filter(parent=None)
 
     def save(self):
         for order, value in enumerate(self.cleaned_data['ordered_values']):

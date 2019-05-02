@@ -44,6 +44,35 @@
                   {% sorting_header 'name' label %}
                 </tr>
               </thead>
+              <tbody class="sortable-items" data-post-url="{% url 'super-collection-card-values-reorder' node_pk=0 %}" data-post-name="ordered_values">
+                {% for node in super_collections %}
+                  <tr class="sortable-item" data-action-go="{% url 'super-collection-dashboard-detail' pk=node.pk %}" data-id="{{ node.pk }}">
+                    {% if perms.super_collections.edit %}
+                      <td class="data-table-icon ignore-link sortable__drag-area">
+                        <svg data-src="{% static "dashboard/images/reorder.svg" %}" height="20" width="20" fill="#000" />
+                      </td>
+                    {% endif %}
+                    <td>
+                      {{ node.name }}
+                    </td>
+                    {% if perms.super_collections.edit %}
+                      <td class="right-align ignore-link">
+                        <a href="{% url 'super-collection-dashboard-edit' pk=node.pk %}" class="btn-flat waves-effect">
+                          {% trans 'Edit' context 'Super collection edit action' %}
+                        </a>
+                        <a href="#base-modal" class="btn-flat waves-effect modal-trigger-custom" data-href="{% url 'super-collection-dashboard-delete' pk=node.pk %}">
+                          {% trans "Remove" context "Super collection list action link" %}
+                        </a>
+                      </td>
+                    {% endif %}
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="2">{% trans "No child super collections" context "Empty list of super collections" %}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+              {% comment %}
               <tbody>
                 {% for super_collection in super_collections %}
                   <tr data-action-go="{% if perms.super_collections.edit %}{% url 'super-collection-dashboard-detail' pk=super_collection.pk %}{% endif %}">
@@ -53,6 +82,7 @@
                   </tr>
                 {% endfor %}
               </tbody>
+              {% endcomment %}
             </table>
           </div>
         </div>

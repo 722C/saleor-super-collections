@@ -103,7 +103,7 @@ def super_collection_details(request, pk):
 @staff_member_required
 @permission_required('super_collections.edit')
 def ajax_reorder_super_collection_cards(request, node_pk):
-    node = get_object_or_404(SuperCollection, pk=node_pk)
+    node = SuperCollection.objects.filter(pk=node_pk).first()
     form = ReorderSuperCollectionCardsForm(
         request.POST, instance=node)
     status = 200

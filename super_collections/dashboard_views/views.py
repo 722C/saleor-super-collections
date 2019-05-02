@@ -18,7 +18,7 @@ from ..models import SuperCollection
 @staff_member_required
 @permission_required('super_collections.view')
 def super_collection_list(request):
-    super_collections = SuperCollection.tree.root_nodes().order_by('name')
+    super_collections = SuperCollection.tree.root_nodes().order_by('sort_order', 'name')
     super_collection_filter = SuperCollectionFilter(
         request.GET, queryset=super_collections)
     super_collections = get_paginator_items(

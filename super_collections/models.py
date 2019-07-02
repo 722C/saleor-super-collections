@@ -1,6 +1,6 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from django.db.models import Case, When, Value
+from django.db.models import Case, When, Value, Q
 from django.urls import reverse, get_script_prefix
 from django.utils.encoding import iri_to_uri
 from django.utils.translation import pgettext_lazy
@@ -180,6 +180,11 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
 
     def get_ordering_queryset(self):
         return self.published_children()
+
+    @property
+    def menu_item(self):
+        from saleor.menu.models import MenuItem
+        return MenuItem.objects.filter(Q(supercollection=self) | Q(url__icontains=self.get_absolute_url())).first()
 
     @property
     def preserved_order(self):

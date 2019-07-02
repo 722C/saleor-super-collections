@@ -3,6 +3,7 @@ import json
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from django.db.models import Q
 
 from saleor.core.utils import build_absolute_uri
 from saleor.product.utils import products_with_availability

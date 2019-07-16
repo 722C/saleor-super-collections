@@ -176,7 +176,7 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
     def published_children(self):
         if not self.pk:
             return SuperCollection.objects.none()
-        return self.children.filter(is_published=True)
+        return SuperCollection.objects.filter(Q(parent=self) | Q(appears_in=self), is_published=True).distinct()
 
     def published_collections(self):
         return self.sorted_collections.filter(is_published=True)

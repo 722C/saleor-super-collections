@@ -38,6 +38,8 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
     parent = models.ForeignKey(
         'self', null=True, blank=True, related_name='children',
         on_delete=models.CASCADE)
+    appears_in = models.ManyToManyField(
+        'self', blank=True, related_name='step_children', symmetrical=False)
     collections = models.ManyToManyField(
         'product.Collection',
         related_name='super_collections', blank=True)

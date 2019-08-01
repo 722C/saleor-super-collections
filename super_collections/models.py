@@ -53,7 +53,6 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
         upload_to='super-collection-backgrounds', blank=True, null=True)
     is_published = models.BooleanField(default=False)
     show_in_root_list = models.BooleanField(default=False)
-    show_children_in_side_nav = models.BooleanField(default=False)
 
     hide_sidebar = models.BooleanField(default=False)
 

@@ -57,6 +57,8 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
 
     hide_sidebar = models.BooleanField(default=False)
 
+    show_collections = models.BooleanField(default=False)
+
     alternative_name = models.CharField(max_length=255, blank=True)
     subheader = models.CharField(max_length=255, blank=True)
     content = models.TextField(help_text=pgettext_lazy(

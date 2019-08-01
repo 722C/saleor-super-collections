@@ -30,7 +30,8 @@ class SuperCollectionForm(forms.ModelForm):
                 'Background Image'),
             'is_published': pgettext_lazy(
                 'Collection published toggle',
-                'Published')}
+                'Published'),
+            'show_collections': pgettext_lazy('Show Collections', 'Show both children super collections and collections on the page')}
 
     def __init__(self, *args, **kwargs):
         self.parent_pk = kwargs.pop('parent_pk')

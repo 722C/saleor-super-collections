@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import pgettext_lazy
@@ -161,3 +162,8 @@ class RechildSuperCollectionView(UpdateView):
     model = SuperCollection
     fields = ['parent']
     template_name_suffix = '_rechild_form'
+
+    success_url = reverse_lazy('super-collection-dashboard-list')
+    
+    def get_context_object_name(self, obj):
+        return 'super_collection'

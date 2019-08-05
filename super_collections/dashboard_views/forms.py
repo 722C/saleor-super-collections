@@ -69,3 +69,9 @@ class ReorderSuperCollectionCardsForm(forms.ModelForm):
             value.sort_order = order
             value.save()
         return self.instance
+
+class RechildSuperCollectionForm(forms.ModelForm):
+    class Meta:
+        model = SuperCollection
+        fields = ('parent', )
+

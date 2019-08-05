@@ -32,4 +32,7 @@ urlpatterns = [
     url(r'^dashboard/super-collections/(?P<pk>[0-9]+)/publish/$',
         dashboard_views.super_collection_toggle_is_published,
         name='super-collection-dashboard-publish'),
+    url(r'^dashboard/super-collections/(?P<pk>[0-9]+)/re-child/$',
+        dashboard_views.RechildSuperCollectionView.as_view(),
+        name='super-collection-rechild'),
 ]

@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.utils.translation import pgettext_lazy
 from django.views.decorators.http import require_POST
+from django.views.generic.edit import UpdateView
 
 from saleor.core.utils import get_paginator_items
 from saleor.dashboard.views import staff_member_required
@@ -155,3 +156,8 @@ def super_collection_toggle_is_published(request, pk):
     super_collection.save(update_fields=['is_published'])
     return JsonResponse(
         {'success': True, 'is_published': super_collection.is_published})
+
+class RechildSuperCollectionView(UpdateView):
+    model = SuperCollection
+    fields = ['parent']
+    template_name_suffix = '_rechild_form'

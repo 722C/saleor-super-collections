@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Case, When, Value, Q
 from django.urls import reverse, get_script_prefix
 from django.utils.encoding import iri_to_uri
+from django.utils.functional import cached_property
 from django.utils.translation import pgettext_lazy
 
 from mptt.managers import TreeManager
@@ -175,6 +176,7 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
         nodes = [node for node in ancestors] + [self]
         return '/'.join([node.slug for node in nodes])
 
+    @property
     def published_children(self):
         if not self.pk:
             return SuperCollection.objects.none()
@@ -184,7 +186,7 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
         return self.sorted_collections.filter(is_published=True)
 
     def get_ordering_queryset(self):
-        return self.published_children()
+        return self.published_children
 
     @property
     def menu_item(self):
@@ -207,3 +209,28 @@ class SuperCollection(MPTTModel, SeoModel, SortableModel):
             return Collection.objects.none()
         return self.collections.annotate(
             preserved=self.preserved_order).order_by('preserved', 'pk')
+
+    @cached_property
+    def schema_org_image(self):
+        if self.main_picture_1:
+            return self.main_picture_1.url
+        if self.main_picture_2:
+            return self.main_picture_2.url
+        if self.main_picture_3:
+            return self.main_picture_3.url
+        
+        first_child_collection_with_image = self.published_collections().filter(
+            background_image__isnull=False).first()
+        if first_child_collection_with_image is not None:
+            return first_child_collection_with_image.background_image.url
+
+        for child_super_collection in self.published_children:
+            if child_super_collection.background_image:
+                return child_super_collection.background_image.url
+            result = child_super_collection.schema_org_image
+            if result is not None:
+                return result
+
+        return None
+
+
